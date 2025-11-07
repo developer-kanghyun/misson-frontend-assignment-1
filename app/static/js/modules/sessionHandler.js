@@ -77,15 +77,17 @@ export const attachSessionListeners = (sessionBox, sessionIndex) => {
     if (target.classList.contains("session-content")) {
       let value = target.value;
 
+      // Intl.Segmenter API로 grapheme 단위 카운팅 (이모지 정확한 글자수 계산)
       const len = getGraphemeLength(value);
 
-      if (len > 1000) {
-        value = sliceGrapheme(value, 0, 1000);
+      if (len > 800) {
+        value = sliceGrapheme(value, 0, 800);
         target.value = value;
       }
 
       const prev = state.sessions[sessionIndex].content;
 
+      // 연속 공백 입력 방지 (UX 개선)
       if (hasConsecutiveSpaces(value)) {
         showToast("연속된 공백은 입력할 수 없습니다");
         target.value = prev;
@@ -93,8 +95,9 @@ export const attachSessionListeners = (sessionBox, sessionIndex) => {
         return;
       }
 
-      const finalLen = getGraphemeLength(value);
       state.sessions[sessionIndex].content = value;
+
+      const finalLen = getGraphemeLength(value);
       updateContentUI(sessionBox, target, finalLen);
     }
   });

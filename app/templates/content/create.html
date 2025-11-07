@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>과제 - 콘텐츠 생성</title>
+    <!-- Base CSS -->
+    <link href="/static/css/base/variables.css" rel="stylesheet" />
+    <link href="/static/css/base/reset.css" rel="stylesheet" />
+
+    <!-- Component CSS -->
+    <link href="/static/css/components/toast.css" rel="stylesheet" />
+
+    <!-- Page CSS -->
+    <link href="/static/css/content-create.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <h1 class="header-title">과제</h1>
+        <button class="btn-next disabled">다음으로</button>
+      </nav>
+    </header>
+
+    <nav class="bottom-nav">
+      <button class="btn-next disabled">다음으로</button>
+    </nav>
+
+    <div class="container">
+      <div class="content">
+        <div class="content-left">
+          <!-- 대표 이미지 섹션 -->
+          <section class="section">
+            <h2 class="section-title">대표 이미지</h2>
+            <div class="image-upload-main" id="main-image-upload-area">
+              <div class="upload-placeholder" id="main-image-placeholder">
+                <div class="upload-text">
+                  <p class="upload-title">
+                    콘텐츠 대표 이미지를<br />등록해 주세요!
+                  </p>
+                  <p class="upload-subtitle">
+                    1:1 비율의 정사각형 이미지를 추천합니다
+                  </p>
+                </div>
+                <button class="btn-upload" id="btn-main-image">
+                  이미지 업로드
+                </button>
+              </div>
+              <img
+                id="main-image-preview"
+                class="image-preview hidden"
+              />
+              <button
+                class="btn-remove-image hidden"
+                id="btn-remove-main-image"
+                aria-label="대표 이미지 삭제"
+              >
+                ×
+              </button>
+            </div>
+            <input
+              type="file"
+              id="main-image-input"
+              accept=".jpg,.png"
+              class="hidden"
+            />
+          </section>
+
+          <!-- 추가 이미지 섹션 -->
+          <section class="section">
+            <h2 class="section-title">추가 이미지 (선택)</h2>
+            <p class="section-subtitle">최대 4장까지 등록할 수 있어요</p>
+            <div
+              class="image-upload-additional"
+              id="additional-image-container"
+            ></div>
+          </section>
+        </div>
+
+        <div class="content-right">
+          <!-- 카테고리 섹션 -->
+          <section class="section">
+            <h2 class="section-title">카테고리</h2>
+            <div class="category-select" id="category-select">
+              <input
+                type="text"
+                class="category-input"
+                placeholder="주제를 선택해주세요"
+                readonly
+              />
+              <svg
+                class="category-arrow"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.46967 3.46967C8.76256 3.17678 9.23732 3.17678 9.53022 3.46967L17.5302 11.4697C17.8231 11.7626 17.8231 12.2373 17.5302 12.5302L9.53022 20.5302C9.23732 20.8231 8.76256 20.8231 8.46967 20.5302C8.17678 20.2373 8.17678 19.7626 8.46967 19.4697L15.9394 11.9999L8.46967 4.53022C8.17678 4.23732 8.17678 3.76256 8.46967 3.46967Z"
+                  fill="#121212"
+                />
+              </svg>
+            </div>
+          </section>
+
+          <!-- 콘텐츠 제목 섹션 -->
+          <section class="section">
+            <h2 class="section-title">콘텐츠 제목</h2>
+            <div class="textarea-wrapper">
+              <textarea
+                class="textarea-input"
+                id="content-title"
+                placeholder="제목을 입력해주세요"
+                maxlength="80"
+                rows="5"
+              ></textarea>
+              <span class="char-count-inside"
+                ><span id="title-char-count">0</span> / 80자 (최소 8자)</span
+              >
+            </div>
+            <span class="input-error-message" id="title-error-message"
+              >8자 이상 입력해주세요.</span
+            >
+          </section>
+
+          <!-- 활동 방식 선택 섹션 -->
+          <section class="section">
+            <h2 class="section-title">활동 방식 선택</h2>
+            <p class="section-subtitle">만남을 어떤 방식으로 진행하시겠어요?</p>
+            <div class="activity-type">
+              <button class="btn-activity" data-type="online">온라인</button>
+              <button class="btn-activity" data-type="offline">
+                직접 만나기
+              </button>
+            </div>
+          </section>
+
+          <!-- 상세 정보 섹션 -->
+          <section class="section">
+            <h2 class="section-title">상세 정보</h2>
+
+            <!-- 회차 컨테이너 -->
+            <div id="session-container">
+              <div id="session-template" class="session-info-box hidden">
+                <!-- 회차 정보 템플릿 -->
+                <button class="btn-delete-session" aria-label="회차 삭제">
+                  <svg
+                    width="19"
+                    height="19"
+                    viewBox="0 0 19 19"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M16.5896 0.256282C16.9313 -0.0854271 17.4852 -0.0854272 17.8269 0.256282C18.1684 0.598008 18.1686 1.15195 17.8269 1.49359L10.2789 9.04162L17.8269 16.5896C18.1684 16.9314 18.1686 17.4853 17.8269 17.827C17.4853 18.1686 16.9314 18.1684 16.5896 17.827L9.04161 10.2789L1.49358 17.827C1.15194 18.1686 0.597991 18.1684 0.256272 17.827C-0.0854306 17.4853 -0.085417 16.9314 0.256272 16.5896L7.8043 9.04162L0.256272 1.49359C-0.0854307 1.15189 -0.0854173 0.597993 0.256272 0.256282C0.597981 -0.0854273 1.15187 -0.0854273 1.49358 0.256282L9.04161 7.80431L16.5896 0.256282Z"
+                      fill="#121212"
+                    />
+                  </svg>
+                </button>
+                <div class="session-info">
+                  <h3 class="session-info-title"></h3>
+
+                  <div class="info">
+                    <!-- 날짜 선택 -->
+                    <div class="form-row">
+                      <label class="form-label">날짜 선택</label>
+                      <input
+                        type="text"
+                        class="text-input session-date"
+                        placeholder="날짜를 선택해주세요"
+                        data-session-index="0"
+                        readonly
+                      />
+                    </div>
+
+                    <!-- 시작 시간 -->
+                    <div class="form-row">
+                      <label class="form-label">시작 시간</label>
+                      <div class="time-input-wrapper">
+                        <div class="button-period">
+                          <button
+                            type="button"
+                            class="btn-time-toggle session-start-period"
+                            data-value="오전"
+                          >
+                            오전
+                          </button>
+                        </div>
+                        <div class="group-hour">
+                          <input
+                            type="text"
+                            inputmode="numeric"
+                            class="time-number-input session-start-hour"
+                            placeholder="10"
+                            value="10"
+                            min="1"
+                            max="12"
+                          />
+                        </div>
+                        <span class="time-separator">:</span>
+                        <div class="group-minute">
+                          <input
+                            type="text"
+                            inputmode="numeric"
+                            class="time-number-input session-start-minute"
+                            placeholder="00"
+                            value="00"
+                            min="0"
+                            max="59"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 종료 시간 (동일한 구조) -->
+                    <div class="form-row">
+                      <label class="form-label">종료 시간</label>
+                      <div class="time-input-wrapper">
+                        <div class="button-period">
+                          <button
+                            type="button"
+                            class="btn-time-toggle session-end-period"
+                            data-value="오전"
+                          >
+                            오전
+                          </button>
+                        </div>
+                        <div class="group-hour">
+                          <input
+                            type="text"
+                            inputmode="numeric"
+                            class="time-number-input session-end-hour"
+                            placeholder="11"
+                            value="11"
+                            min="1"
+                            max="12"
+                          />
+                        </div>
+                        <span class="time-separator">:</span>
+                        <div class="group-minute">
+                          <input
+                            type="text"
+                            inputmode="numeric"
+                            class="time-number-input session-end-minute"
+                            placeholder="00"
+                            value="00"
+                            min="0"
+                            max="59"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 활동 내용 -->
+                <div class="textarea-wrapper">
+                  <h3 class="session-info-title">활동 내용</h3>
+                  <p class="activity-subtitle">
+                    날짜별 활동 내용을 간단히 적어주세요
+                  </p>
+                  <textarea
+                    class="textarea-input session-content"
+                    placeholder="활동 내용을 간단히 입력해주세요"
+                    maxlength="800"
+                  ></textarea>
+                  <span class="char-count-inside"
+                    ><span class="session-char-count">0</span> / 800자 (최소
+                    8자)</span
+                  >
+                </div>
+                <span class="input-error-message session-content-error"
+                  >8자 이상 작성해 주세요.</span
+                >
+              </div>
+            </div>
+
+            <!-- 회차 추가 버튼 -->
+            <button class="btn-submit-bottom" id="btn-submit">
+              회차 추가하기
+            </button>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal delete-modal hidden"
+      id="delete-modal"
+      role="dialog"
+      aria-labelledby="deleteModalTitle"
+      aria-modal="true"
+    >
+      <div class="delete-modal-content">
+        <div class="delete-modal-header">
+          <button
+            class="btn-modal-close"
+            id="btn-delete-modal-close"
+            aria-label="모달 닫기"
+          >
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21.549 7.2153C21.89 6.8736 22.444 6.8736 22.786 7.2153C23.127 7.557 23.128 8.1109 22.786 8.4526L15.238 16.0006L22.786 23.5486C23.127 23.8904 23.128 24.4443 22.786 24.7859C22.444 25.1276 21.89 25.1274 21.549 24.7859L14.001 17.2379L6.453 24.7859C6.111 25.1276 5.557 25.1274 5.215 24.7859C4.874 24.4442 4.874 23.8903 5.215 23.5486L12.763 16.0006L5.215 8.4526C4.874 8.1109 4.874 7.557 5.215 7.2153C5.557 6.8736 6.111 6.8736 6.453 7.2153L14.001 14.7633L21.549 7.2153Z"
+                fill="#121212"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="delete-modal-body">
+          <div class="delete-modal-text">
+            <h2 class="delete-modal-title" id="delete-modal-title">
+              회차 정보를 삭제하시겠어요?
+            </h2>
+            <p class="delete-modal-subtitle">삭제된 회차는 되돌릴 수 없어요.</p>
+          </div>
+          <div class="delete-modal-buttons">
+            <button class="btn-delete-cancel" id="btn-delete-cancel">취소</button>
+            <button class="btn-delete-confirm" id="btn-delete-confirm">
+              삭제하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-screen hidden" id="category-screen">
+      <!-- 헤더 섹션 -->
+      <div class="category-header">
+        <!-- 나가기 버튼 - 데스크톱용 -->
+        <button
+                id="btn-category-exit"
+                class="btn-category-exit btn-category-exit-desktop"
+        >
+          나가기
+        </button>
+        <!-- X 버튼 - 모바일용 -->
+        <button
+          class="btn-category-exit btn-category-exit-mobile"
+          aria-label="카테고리 선택 닫기"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+              fill="#121212"
+            />
+          </svg>
+        </button>
+
+        <!-- 제목 (중앙) -->
+        <h1 class="category-title">카테고리</h1>
+
+        <!-- 다음 버튼 (우측) - 데스크톱용 -->
+        <button id="btn-category-next" class="btn-category-next" disabled>
+          다음으로
+        </button>
+      </div>
+
+      <!-- 설명 텍스트 섹션 -->
+      <div class="category-description">
+        <h2 class="category-description-title">
+          어떤 카테고리의<br />콘텐츠를 만드시나요?
+        </h2>
+        <p class="category-description-subtitle">
+          최대 2개까지 선택 가능합니다.
+        </p>
+      </div>
+
+      <!-- 컨테이너 -->
+      <div class="category-container">
+        <!-- 2열 그리드 레이아웃 -->
+        <div id="category-grid" class="category-grid"></div>
+      </div>
+
+      <nav class="category-bottom-nav">
+        <button class="btn-category-next" disabled>다음으로</button>
+      </nav>
+    </div>
+
+    <!-- Calendar Component (Non-module) -->
+    <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+
+    <!-- Main Application (ES6 Module) -->
+    <script type="module" src="{{ url_for('static', filename='js/content-create-main.js') }}"></script>
+  </body>
+</html>

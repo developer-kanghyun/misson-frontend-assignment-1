@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+  curious-frontend-2:
+    environment:
+      - TZ=Asia/Seoul
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.development
+      labels:
+        - flask
+    volumes:
+        - .:/code
+    image: "frontend-engineer-test"
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
